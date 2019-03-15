@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Firebase
 
 extension UISearchController {
     var searchBarIsEmpty: Bool {
@@ -18,13 +19,17 @@ extension UISearchController {
         return isActive && ( !searchBarIsEmpty )
     }
 }
-class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
 
-    @IBOutlet weak var tableView: UITableView!
+class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, SymbolTableViewCelldelegate {
+ 
+    lazy var db = Firestore.firestore()
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var doneBarButtonItem: UIBarButtonItem!
     
     var symbols: [String] = []
+    var favoritesData: [String: Bool] = [:]
+    
     var filteredSymbols = [String]()
     var resultSearchController = UISearchController()
     
@@ -51,6 +56,13 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         definesPresentationContext = true
         
+        //db.collection("example-collection").addDocument(data: ["Example": "123445"])
+        //db.collection("favorites").addDocument(data: ["foo": true])
+        db.collection("favorites").document("currentUser").addSnapshotListener { (snapshot, error) in
+            self.favoritesData = snapshot?.data() as? [String: Bool] ?? [:]
+            self.tableView.reloadData()
+        }
+        
         let urlString = "https://forex.1forge.com/1.0.3/symbols?pairs=EURUSD,GBPJPY,AUDUSD&api_key=scKdc5njprJwBjonYn417rDniGrve9aM"
         Alamofire.request(urlString).responseJSON {  response in
             if let responseData = response.data {
@@ -60,6 +72,15 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
             print(response)
         }
     }
+    
+    func symbolTableViewCellValueDidChange(_ cell: SymbolTableViewCell) {
+        let symbol = cell.titleLabel.text!
+        let value = cell.favoriteSwitch.isOn
+        favoritesData[symbol] = value
+        db.collection("favorites").document("currentUser").updateData(favoritesData)
+    }
+    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -73,9 +94,15 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SymbolTableViewCell")!
-        cell.textLabel?.text = isFiltering() ? filteredSymbols[indexPath.row] : symbols[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SymbolTableViewCell", for: indexPath) as! SymbolTableViewCell
+        let symbol = isFiltering() ? filteredSymbols[indexPath.row] : symbols[indexPath.row]
+        cell.titleLabel?.text = symbol
+        cell.favoriteSwitch.isOn = favoritesData[symbol] ?? false
+//        cell.favoriteSwitch.isOn = favoritesData.contains { (snapshot: [String: Bool]) -> Bool  in
+//            return ([snapshot.key: snapshot.value )
+//        }
         cell.selectionStyle = .none
+        cell.delegate = self
         let cellIsSelected = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
         cell.accessoryType = cellIsSelected ? .checkmark : .none
         return cell
