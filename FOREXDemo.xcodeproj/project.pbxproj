@@ -13,9 +13,10 @@
 		27062F99222B321B0000D704 /* CurrencyPairTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27062F98222B321B0000D704 /* CurrencyPairTableViewCell.swift */; };
 		27062F9C22344A4C0000D704 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27062F9B22344A4B0000D704 /* GoogleService-Info.plist */; };
 		27062F9E223451EA0000D704 /* SymbolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27062F9D223451EA0000D704 /* SymbolTableViewCell.swift */; };
-		27062FC7223B558B0000D704 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27062FC5223B558A0000D704 /* FavoritesViewController.swift */; };
 		27062FC9223B5F5F0000D704 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27062FC8223B5F5F0000D704 /* Items.swift */; };
 		27062FCB223B61000000D704 /* FavoriteCurrencyPairTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27062FCA223B61000000D704 /* FavoriteCurrencyPairTableViewCell.swift */; };
+		27194004223BF7C9004766D3 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27194003223BF7C9004766D3 /* FavoritesViewController.swift */; };
+		27194008223BFC9A004766D3 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27194007223BFC9A004766D3 /* MyTabBarController.swift */; };
 		277444FC222ADA1C003B2181 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277444FB222ADA1C003B2181 /* AppDelegate.swift */; };
 		277444FE222ADA1C003B2181 /* SymbolTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277444FD222ADA1C003B2181 /* SymbolTableViewController.swift */; };
 		27744501222ADA1C003B2181 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 277444FF222ADA1C003B2181 /* Main.storyboard */; };
@@ -31,10 +32,10 @@
 		27062F98222B321B0000D704 /* CurrencyPairTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPairTableViewCell.swift; sourceTree = "<group>"; };
 		27062F9B22344A4B0000D704 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		27062F9D223451EA0000D704 /* SymbolTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTableViewCell.swift; sourceTree = "<group>"; };
-		27062FC5223B558A0000D704 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FavoritesViewController.swift; path = ../FavoritesViewController.swift; sourceTree = "<group>"; };
-		27062FC6223B558B0000D704 /* FavoritesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FavoritesViewController.xib; path = "/Users/mike/workspace/IOS-Bootcamp/class_files/mike-iOS_Dev_Level_2_Class/FOREXDemo/FOREXDemo/FavoritesViewController.xib"; sourceTree = "<absolute>"; };
 		27062FC8223B5F5F0000D704 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		27062FCA223B61000000D704 /* FavoriteCurrencyPairTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCurrencyPairTableViewCell.swift; sourceTree = "<group>"; };
+		27194003223BF7C9004766D3 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		27194007223BFC9A004766D3 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		277444F8222ADA1C003B2181 /* FOREXDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FOREXDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		277444FB222ADA1C003B2181 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		277444FD222ADA1C003B2181 /* SymbolTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTableViewController.swift; sourceTree = "<group>"; };
@@ -80,8 +81,6 @@
 		277444FA222ADA1C003B2181 /* FOREXDemo */ = {
 			isa = PBXGroup;
 			children = (
-				27062FC5223B558A0000D704 /* FavoritesViewController.swift */,
-				27062FC6223B558B0000D704 /* FavoritesViewController.xib */,
 				27062F9B22344A4B0000D704 /* GoogleService-Info.plist */,
 				277444FB222ADA1C003B2181 /* AppDelegate.swift */,
 				277444FD222ADA1C003B2181 /* SymbolTableViewController.swift */,
@@ -96,6 +95,8 @@
 				27744507222ADA1F003B2181 /* Info.plist */,
 				27062F98222B321B0000D704 /* CurrencyPairTableViewCell.swift */,
 				27062FCA223B61000000D704 /* FavoriteCurrencyPairTableViewCell.swift */,
+				27194003223BF7C9004766D3 /* FavoritesViewController.swift */,
+				27194007223BFC9A004766D3 /* MyTabBarController.swift */,
 			);
 			path = FOREXDemo;
 			sourceTree = "<group>";
@@ -309,14 +310,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				27062FCB223B61000000D704 /* FavoriteCurrencyPairTableViewCell.swift in Sources */,
+				27194004223BF7C9004766D3 /* FavoritesViewController.swift in Sources */,
 				27062FC9223B5F5F0000D704 /* Items.swift in Sources */,
 				277444FE222ADA1C003B2181 /* SymbolTableViewController.swift in Sources */,
 				27062F93222B167A0000D704 /* SymbolDetailTableHeaderView.swift in Sources */,
-				27062FC7223B558B0000D704 /* FavoritesViewController.swift in Sources */,
 				27062F99222B321B0000D704 /* CurrencyPairTableViewCell.swift in Sources */,
 				27062F9E223451EA0000D704 /* SymbolTableViewCell.swift in Sources */,
 				277444FC222ADA1C003B2181 /* AppDelegate.swift in Sources */,
 				27062F8F222B097F0000D704 /* SymbolDetailViewController.swift in Sources */,
+				27194008223BFC9A004766D3 /* MyTabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

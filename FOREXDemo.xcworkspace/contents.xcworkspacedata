@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:FavoritesViewController.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/mike/workspace/IOS-Bootcamp/class_files/mike-iOS_Dev_Level_2_Class/FOREXDemo/FOREXDemo/FavoritesViewController.xib">
-   </FileRef>
-   <FileRef
       location = "group:FOREXDemo.xcodeproj">
    </FileRef>
    <FileRef

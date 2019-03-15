@@ -12,6 +12,10 @@ import UIKit
 import Alamofire
 import Firebase
 
+protocol FavoriteArrayDelegaate: class {
+    func favoritesDidChange(_ favorites: [String: Bool]?)
+}
+
 extension UISearchController {
     var searchBarIsEmpty: Bool {
         return searchBar.text?.isEmpty ?? true
@@ -23,7 +27,7 @@ extension UISearchController {
 }
 
 class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, SymbolTableViewCelldelegate {
- 
+    
     lazy var db = Firestore.firestore()
     
     @IBOutlet weak var tableView: UITableView!
@@ -31,6 +35,8 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     var symbols: [String] = []
     var favoritesData: [String: Bool] = [:]
+    
+    weak var favoriteDataDelegate: FavoriteArrayDelegaate?
     
     var filteredSymbols = [String]()
     var resultSearchController = UISearchController()
@@ -62,6 +68,8 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
         //db.collection("favorites").addDocument(data: ["foo": true])
         db.collection("favorites").document("currentUser").addSnapshotListener { (snapshot, error) in
             self.favoritesData = snapshot?.data() as? [String: Bool] ?? [:]
+            print("=============== in didload initalizing favoritesData ==============")
+            self.favoriteDataDelegate?.favoritesDidChange(self.favoritesData)
             self.tableView.reloadData()
         }
         
@@ -71,15 +79,17 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
                 self.symbols = (try? JSONDecoder().decode([String].self, from: responseData)) ?? []
                 self.tableView.reloadData()
             }
-            print(response)
+            //print(response)
         }
     }
     
     func symbolTableViewCellValueDidChange(_ cell: SymbolTableViewCell) {
+        print("============= in symbolTableViewCellValueDidChange ==============")
         let symbol = cell.titleLabel.text!
         let value = cell.favoriteSwitch.isOn
         favoritesData[symbol] = value
         db.collection("favorites").document("currentUser").updateData(favoritesData)
+        favoriteDataDelegate?.favoritesDidChange(favoritesData)
     }
     
 

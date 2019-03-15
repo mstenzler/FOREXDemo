@@ -23,6 +23,7 @@ class SymbolDetailViewController: UIViewController, UITableViewDataSource, UITab
     var currencyPairs: [CurrencyPair] = []
     
     override func viewDidLoad() {
+        print("In SymbolDetailViewController.viewDidload ================")
         super.viewDidLoad()
         //print(symbols)
         tableView.delegate = self
@@ -30,14 +31,15 @@ class SymbolDetailViewController: UIViewController, UITableViewDataSource, UITab
         
         tableView.register(UINib(nibName: "SymbolDetailTableHeaderView",bundle: nil), forHeaderFooterViewReuseIdentifier: "SymbolDetailTableHeaderView")
         let currencyPairs = symbols.joined(separator: ",")
+        print("SymbolDetailView.currencyPairs = \(currencyPairs)")
         let urlString = "https://forex.1forge.com/1.0.3/quotes?pairs=\(currencyPairs)&api_key=scKdc5njprJwBjonYn417rDniGrve9aM"
         Alamofire.request(urlString).responseJSON {  response in
             if let responseData = response.data {
                 print("======= got data ======")
                 self.currencyPairs = (try? JSONDecoder().decode([CurrencyPair].self, from: responseData)) ?? []
-                print(self.currencyPairs)
+                //print(self.currencyPairs)
                 self.tableView.reloadData()
-                print(responseData)
+                //print(responseData)
             }
             //print(response)
         }

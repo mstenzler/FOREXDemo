@@ -1,5 +1,4 @@
-//
-//  FavoriteCurrencyPairTableViewCell.swift
+////  FavoriteCurrencyPairTableViewCell.swift
 //  FOREXDemo
 //
 //  Created by Michael Stenzler on 3/15/19.
@@ -10,8 +9,13 @@ import UIKit
 
 class FavoriteCurrencyPairTableViewCell: UITableViewCell {
 
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
+
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var askLabel: UILabel!
+    @IBOutlet weak var symbolLabel: UILabel!
+    
+    //    override func awakeFromNib() {
+    //        super.awakeFromNib()
 //        // Initialization code
 //    }
 //
