@@ -6,6 +6,8 @@
 //  Copyright © 2019 Michael Stenzler. All rights reserved.
 //
 
+//Look at example: https://stackoverflow.com/questions/44847305/uitabbarcontrollerdelegate-on-two-separate-uiviewcontrollers-swift
+
 import UIKit
 import Alamofire
 import Firebase
