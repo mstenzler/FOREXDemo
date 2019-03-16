@@ -8,23 +8,45 @@
 
 import UIKit
 import Alamofire
+import Firebase
 
-class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class FavoritesViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
+    lazy var db = Firestore.firestore()
+    lazy var document = db.collection("favorites").document("currentUser")
     var symbols: [String] = []
+    var favorites: [String] = []
     var currencyPairs: [CurrencyPair] = []
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        //self.clearsSelectionOnViewWillAppear = YES;
+//        tableView.indexPathsForSelectedItems?
+//            .forEach { self.collectionView.deselectItem(at: $0, animated: false) }
         
-        tableView.register(UINib(nibName: "SymbolDetailTableHeaderView",bundle: nil), forHeaderFooterViewReuseIdentifier: "SymbolDetailTableHeaderView")
-        loadCurrencyPairs()
-        print("====tableView = ")
-        print(tableView)
+        tableView.allowsMultipleSelection = true
+        
+        document.addSnapshotListener { (snapshot, error) in
+            let favoritesData = snapshot?.data() as? [String: Bool] ?? [:]
+            var favoriteSymbols: [String] = []
+            for(key, value) in favoritesData {
+                if value { favoriteSymbols.append(key) }
+            }
+            
+            self.favorites = favoriteSymbols
+            self.tableView.reloadData()
+        }
+        
+//        tableView.register(UINib(nibName: "SymbolDetailTableHeaderView",bundle: nil), forHeaderFooterViewReuseIdentifier: "SymbolDetailTableHeaderView")
+//        loadCurrencyPairs()
+//        print("====tableView = ")
+//        print(tableView)
        
         // Do any additional setup after loading the view.
     }
@@ -61,42 +83,57 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currencyPairs.count
+        return favorites.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCurrencyPairTableViewCell") as! FavoriteCurrencyPairTableViewCell
-        print("in cellForRowAt: indexPath.row = \(indexPath.row)\ncell=")
-        print(cell)
-        let currencyPair = currencyPairs[indexPath.row]
-        print("currencyPair = \(currencyPair)")
-        cell.symbolLabel.text = currencyPair.symbol
-        cell.priceLabel.text = "\(currencyPair.bid)"
-        cell.askLabel.text = "\(currencyPair.ask)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCurrencyPairTableViewCell")!
+        cell.textLabel?.text = favorites[indexPath.row]
+        cell.selectionStyle = .none
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 32
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 0:
-            return tableView.dequeueReusableHeaderFooterView(withIdentifier: "SymbolDetailTableHeaderView")!
-        default:
-            fatalError() //aasked for a section which doesn't have a header
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("========= in viewWillAppear ========")
+        if let selectionIndexPaths = tableView.indexPathsForSelectedRows {
+            for indexPath in selectionIndexPaths {
+                self.tableView.deselectRow(at: indexPath, animated: animated)
+            }
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        print("============== SEQUE =======")
+       // print("sequue.indentier = \(segue.identifier)")
+        switch segue.identifier ?? "" {
+        case "FavoritesViewController_to_SymbolDetailViewController":
+            guard let destination = segue.destination as? SymbolDetailViewController else {
+                return
+            }
+            
+            let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
+            var selectedSymbols: [String] = []
+            
+            for indexPath in selectedIndexPaths {
+                selectedSymbols.append(favorites[indexPath.row])
+            }
+            
+            destination.symbols = selectedSymbols
+        default:
+            assert(false, "You added a segue but didn't impletment prepare for segue")
+        }
     }
-    */
+}
 
+extension FavoritesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = self.tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .checkmark
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = self.tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .none
+    }
+    
 }

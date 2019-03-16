@@ -81,7 +81,7 @@
         <!--Favorites View Controller-->
         <scene sceneID="X7r-Gi-pfK">
             <objects>
-                <viewController id="UeB-4T-05f" customClass="FavoritesViewController" customModule="FOREXDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FavoritesViewController_to_SymbolDetailViewController&quot;:" id="UeB-4T-05f" customClass="FavoritesViewController" customModule="FOREXDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zhk-k4-52C">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,35 +96,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6jQ-QR-oGN" id="XHI-Da-w6a">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Symbol" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2CK-1u-XAm">
-                                                    <rect key="frame" x="28" y="-3" width="83" height="48"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fj9-h7-a54">
-                                                    <rect key="frame" x="255" y="4" width="91" height="35"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ask" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MWM-d1-ivp">
-                                                    <rect key="frame" x="144" y="4" width="87" height="34"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="askLabel" destination="MWM-d1-ivp" id="ngC-d2-zlv"/>
-                                            <outlet property="priceLabel" destination="fj9-h7-a54" id="HeC-dP-f5b"/>
-                                            <outlet property="symbolLabel" destination="2CK-1u-XAm" id="mEQ-j1-Tde"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -138,7 +110,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vLl-4t-ldx"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tTr-Ak-bDS"/>
+                    <navigationItem key="navigationItem" id="tTr-Ak-bDS">
+                        <barButtonItem key="rightBarButtonItem" title="done" id="iCx-wy-Ha6">
+                            <connections>
+                                <segue destination="u9U-rJ-hSI" kind="show" identifier="FavoritesViewController_to_SymbolDetailViewController" id="161-bG-JZS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="LZa-2A-gEo" id="00I-Kz-nbn"/>
                     </connections>
@@ -164,7 +142,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FmV-Ev-Z8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6799.1999999999998" y="55.322338830584712"/>
+            <point key="canvasLocation" x="-6758" y="-284"/>
         </scene>
         <!--Symbol Detail View Controller-->
         <scene sceneID="AFv-wi-m5W">
@@ -278,7 +256,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W0V-cX-HOJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6799.1999999999998" y="717.39130434782612"/>
+            <point key="canvasLocation" x="-6759" y="478"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="161-bG-JZS"/>
+    </inferredMetricsTieBreakers>
 </document>
