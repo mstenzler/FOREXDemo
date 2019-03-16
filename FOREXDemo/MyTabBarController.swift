@@ -7,16 +7,16 @@
 //
 
 import UIKit
+//import Firebase
+//import FirebaseAuth
 
 class MyTabBarController: UITabBarController, FavoriteArrayDelegaate {
     
     var favoritesViewController: FavoritesViewController?
+    //var handle: AuthStateDidChangeListenerHandle?
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("=====\n=====\n=====\n====\n===\n====\n======\n===\n====\n======\n")
-        print("======== in MyTabBarController viewdidLoad ==============\n ViewControllers = ")
-        print(viewControllers)
         
         if let firstNavigationController = self.viewControllers?.first as? UINavigationController {
             print("Got first navication controller: \(firstNavigationController)")
@@ -41,6 +41,16 @@ class MyTabBarController: UITabBarController, FavoriteArrayDelegaate {
 
         // Do any additional setup after loading the view.
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+//            //add here
+//        }
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        Auth.auth().removeStateDidChangeListener(handle!)
+//    }
     
     func favoritesDidChange(_ favorites: [String : Bool]?) {
         print("====== in favoritesDidChange ==============")

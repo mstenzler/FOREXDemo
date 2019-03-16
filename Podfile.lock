@@ -196,6 +196,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - Firebase
+  - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Firestore
@@ -267,6 +268,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: e24c1b40f2befb41fff0618d98d5c860f7becfc2
+PODFILE CHECKSUM: cce76ab1b92da8c2d07605b82a6b19cda63f69d1
 
 COCOAPODS: 1.6.0

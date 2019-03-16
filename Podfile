@@ -13,5 +13,6 @@ target 'FOREXDemo' do
   pod 'FirebaseUI'
   pod 'Firebase/Messaging'
   pod 'Firebase/Database'
+  pod 'Firebase/Auth'
   
 end

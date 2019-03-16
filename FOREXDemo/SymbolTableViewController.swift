@@ -11,6 +11,7 @@
 import UIKit
 import Alamofire
 import Firebase
+import FirebaseUI
 
 protocol FavoriteArrayDelegaate: class {
     func favoritesDidChange(_ favorites: [String: Bool]?)
@@ -41,6 +42,7 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
     var filteredSymbols = [String]()
     var resultSearchController = UISearchController()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -63,23 +65,64 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
         })()
         
         definesPresentationContext = true
+        loginIfNecessary(animated: false);
+        refreshForCurrentUser()
         
-        //db.collection("example-collection").addDocument(data: ["Example": "123445"])
-        //db.collection("favorites").addDocument(data: ["foo": true])
-        db.collection("favorites").document("currentUser").addSnapshotListener { (snapshot, error) in
-            self.favoritesData = snapshot?.data() as? [String: Bool] ?? [:]
-            print("=============== in didload initalizing favoritesData ==============")
-            self.favoriteDataDelegate?.favoritesDidChange(self.favoritesData)
-            self.tableView.reloadData()
-        }
-        
-        let urlString = "https://forex.1forge.com/1.0.3/symbols?pairs=EURUSD,GBPJPY,AUDUSD&api_key=scKdc5njprJwBjonYn417rDniGrve9aM"
-        Alamofire.request(urlString).responseJSON {  response in
-            if let responseData = response.data {
-                self.symbols = (try? JSONDecoder().decode([String].self, from: responseData)) ?? []
+ 
+    }
+    
+    func refreshForCurrentUser() {
+        if let user = Auth.auth().currentUser {
+            //db.collection("example-collection").addDocument(data: ["Example": "123445"])
+            //db.collection("favorites").addDocument(data: ["foo": true])
+            db.collection("favorites").document("currentUser").addSnapshotListener { (snapshot, error) in
+                self.favoritesData = snapshot?.data() as? [String: Bool] ?? [:]
+                print("=============== in didload initalizing favoritesData ==============")
+                self.favoriteDataDelegate?.favoritesDidChange(self.favoritesData)
                 self.tableView.reloadData()
             }
-            //print(response)
+            
+            let urlString = "https://forex.1forge.com/1.0.3/symbols?pairs=EURUSD,GBPJPY,AUDUSD&api_key=scKdc5njprJwBjonYn417rDniGrve9aM"
+            Alamofire.request(urlString).responseJSON {  response in
+                if let responseData = response.data {
+                    self.symbols = (try? JSONDecoder().decode([String].self, from: responseData)) ?? []
+                    self.tableView.reloadData()
+                }
+                //print(response)
+            }
+        }
+    }
+    
+    func loginIfNecessary(animated: Bool) {
+        guard let authUI = FUIAuth.defaultAuthUI() else { return }
+        
+        if Auth.auth().currentUser == nil {
+            authUI.delegate = self
+            
+            let actionCodeSettings = ActionCodeSettings()
+            actionCodeSettings.url = URL(string: "forexdemo-3f7ae.firebaseapp.com")
+            actionCodeSettings.handleCodeInApp = true
+            actionCodeSettings.setAndroidPackageName("com.MichaelStenzler.FOREXDemo",
+                                                     installIfNotAvailable: false,
+                                                     minimumVersion: "12")
+            
+            authUI.providers = [
+                FUIGoogleAuth(),
+                FUIPhoneAuth(authUI:authUI),
+                FUIEmailAuth(authAuthUI: authUI,
+                             signInMethod: EmailLinkAuthSignInMethod,
+                             forceSameDevice: false,
+                             allowNewEmailAccounts: true,
+                             actionCodeSetting: actionCodeSettings)
+            ]
+            
+            let kFirebaseTermsOfService = URL(string: "https://pljns.com")!
+            authUI.tosurl = kFirebaseTermsOfService
+            authUI.shouldHideCancelButton = true
+            authUI.shouldHideCancelButton = true
+            //refreshForCurrentUser()
+            let authViewController = authUI.authViewController()
+            present(authViewController, animated: animated, completion: nil)
         }
     }
     
@@ -174,3 +217,9 @@ class SymbolTableViewController: UIViewController, UITableViewDelegate, UITableV
     
 }
 
+
+extension SymbolTableViewController: FUIAuthDelegate {
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        refreshForCurrentUser()
+    }
+}
