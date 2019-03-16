@@ -20,7 +20,7 @@ class FavoritesViewController: UIViewController, UITableViewDataSource {
     var favorites: [String] = []
     var currencyPairs: [CurrencyPair] = []
     
-    
+    var selectedFavorites: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,9 +88,17 @@ class FavoritesViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCurrencyPairTableViewCell")!
-        cell.textLabel?.text = favorites[indexPath.row]
+        let symbol = favorites[indexPath.row]
+        cell.textLabel?.text = symbol
         cell.selectionStyle = .none
+        cell.accessoryType = selectedFavorites.contains(symbol) ? .checkmark : .none
         return cell
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        selectedFavorites = []
+        tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,7 +126,7 @@ class FavoritesViewController: UIViewController, UITableViewDataSource {
                 selectedSymbols.append(favorites[indexPath.row])
             }
             
-            destination.symbols = selectedSymbols
+            destination.symbols = selectedFavorites
         default:
             assert(false, "You added a segue but didn't impletment prepare for segue")
         }
@@ -128,11 +136,15 @@ class FavoritesViewController: UIViewController, UITableViewDataSource {
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = self.tableView.cellForRow(at: indexPath)
+        selectedFavorites.append(favorites[indexPath.row])
         cell?.accessoryType = .checkmark
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = self.tableView.cellForRow(at: indexPath)
+        selectedFavorites.removeAll { (element) -> Bool in
+            return element == self.favorites[indexPath.row]
+        }
         cell?.accessoryType = .none
     }
     
